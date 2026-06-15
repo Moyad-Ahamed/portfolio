@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moyad — Ergonomie Cognitive & HCI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --ink: #1A1814;
+    --ink-2: #5A5750;
+    --ink-3: #9A9690;
+    --accent: #2D5A3D;
+    --accent-light: #E8F0EA;
+    --accent-2: #8B4B1A;
+    --accent-2-light: #F5EDE4;
+    --border: rgba(26,24,20,0.10);
+    --border-strong: rgba(26,24,20,0.18);
+    --radius: 4px;
+    --radius-lg: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(247,245,240,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 2rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 1.75rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink-2);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* LAYOUT */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  section {
+    padding: 5rem 0 2rem;
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  /* HERO */
+  #hero {
+    padding-top: 9rem;
+    padding-bottom: 4rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .hero-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 2rem;
+  }
+  .lang-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    max-width: 680px;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--ink-2);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .hero-tag {
+    font-size: 12px;
+    font-weight: 400;
+    padding: 5px 12px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 99px;
+    color: var(--ink-2);
+    background: transparent;
+    letter-spacing: 0.02em;
+  }
+
+  /* AXE D'INTÉRÊT */
+  .interest-block {
+    margin-top: 3rem;
+    padding: 1.5rem 1.75rem;
+    background: var(--accent-light);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  }
+  .interest-block p {
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 400;
+    line-height: 1.7;
+  }
+  .interest-block strong {
+    font-weight: 500;
+  }
+
+  /* À PROPOS */
+  #about .about-text {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--ink-2);
+    line-height: 1.8;
+    max-width: 640px;
+  }
+  #about .about-text strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* FORMATION */
+  #formation {
+    border-top: 0.5px solid var(--border);
+  }
+  .timeline {
+    position: relative;
+    padding-left: 1.5rem;
+    border-left: 0.5px solid var(--border-strong);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .timeline-item {
+    position: relative;
+    padding: 0 0 2rem 1.5rem;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-dot {
+    position: absolute;
+    left: -1.65rem;
+    top: 5px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1.5px solid var(--border-strong);
+  }
+  .timeline-item.current .timeline-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .timeline-date {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 4px;
+  }
+  .timeline-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .timeline-sub {
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .badge-current {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: 99px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* PROJETS */
+  #projets {
+    border-top: 0.5px solid var(--border);
+  }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 1px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--border-strong);
+  }
+  .project-card {
+    background: var(--surface);
+    padding: 1.5rem;
+    transition: background 0.2s;
+  }
+  .project-card:hover { background: #FDFCFA; }
+  .project-number {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+  }
+  .project-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .project-card p {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--ink-2);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+  .project-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 1rem;
+  }
+  .pill {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 99px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+  .pill-green { background: var(--accent-light); color: var(--accent); }
+  .pill-brown { background: var(--accent-2-light); color: var(--accent-2); }
+  .pill-gray { background: #EEECE8; color: #5A5750; }
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    border-bottom: 0.5px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .project-link:hover { border-bottom-color: var(--accent); }
+  .project-link svg { width: 12px; height: 12px; }
+
+  /* COMPÉTENCES */
+  #competences {
+    border-top: 0.5px solid var(--border);
+  }
+  .skills-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .skills-group {
+    background: var(--surface);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+  }
+  .skills-group-title {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    color: var(--ink-2);
+    padding: 5px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .skill-row:last-child { border-bottom: none; }
+  .skill-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--border-strong);
+    flex-shrink: 0;
+  }
+
+  /* CONTACT */
+  #contact {
+    border-top: 0.5px solid var(--border);
+    padding-bottom: 6rem;
+  }
+  .contact-grid {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--ink-2);
+    padding: 0.6rem 1rem;
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .contact-item:hover { border-color: var(--accent); color: var(--accent); }
+  .contact-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  /* FOOTER */
+  footer {
+    border-top: 0.5px solid var(--border);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+
+  /* LANG SWITCHER */
+  .lang-switch {
+    display: flex;
+    gap: 4px;
+  }
+  .lang-btn {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--ink-3);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .lang-btn.active {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up {
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 1rem; }
+    main { padding: 0 1rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .skills-layout { grid-template-columns: 1fr; }
+    h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo">M.</a>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#formation">Formation</a></li>
+    <li><a href="#projets">Projets</a></li>
+    <li><a href="#competences">Compétences</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="lang-switch">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-lang fade-up">
+      <span class="lang-dot"></span>
+      <span data-fr="Université Côte d'Azur — M1 Ergonomie Cognitive" data-en="Université Côte d'Azur — M1 Cognitive Ergonomics">Université Côte d'Azur — M1 Ergonomie Cognitive</span>
+    </div>
+    <h1 class="fade-up delay-1">
+      <span data-fr="Psychologie cognitive &amp; <em>interfaces numériques</em>" data-en="Cognitive psychology &amp; <em>digital interfaces</em>">Psychologie cognitive &amp; <em>interfaces numériques</em></span>
+    </h1>
+    <p class="hero-sub fade-up delay-2" data-fr="De l'ingénierie logicielle à l'ergonomie des systèmes numériques — un profil hybride pour comprendre comment les humains interagissent avec la technologie." data-en="From software engineering to digital systems ergonomics — a hybrid profile for understanding how humans interact with technology.">
+      De l'ingénierie logicielle à l'ergonomie des systèmes numériques — un profil hybride pour comprendre comment les humains interagissent avec la technologie.
+    </p>
+    <div class="hero-tags fade-up delay-3">
+      <span class="hero-tag" data-fr="Ergonomie cognitive" data-en="Cognitive ergonomics">Ergonomie cognitive</span>
+      <span class="hero-tag">HCI</span>
+      <span class="hero-tag" data-fr="Charge mentale" data-en="Mental workload">Charge mentale</span>
+      <span class="hero-tag" data-fr="IA & apprentissage" data-en="AI & learning">IA & apprentissage</span>
+      <span class="hero-tag" data-fr="Bilingue FR/EN (C1)" data-en="Bilingual FR/EN (C1)">Bilingue FR/EN (C1)</span>
+    </div>
+    <div class="interest-block fade-up delay-4">
+      <p>
+        <strong data-fr="Axe de recherche :" data-en="Research interest:">Axe de recherche :</strong>
+        <span data-fr=" Charge cognitive et apprentissage assisté par IA — comment les interfaces intelligentes peuvent adapter leur complexité à l'état cognitif de l'utilisateur, optimiser la transmission de connaissances et réduire la surcharge sans appauvrir l'expérience d'apprentissage." data-en=" Cognitive load and AI-assisted learning — how intelligent interfaces can adapt their complexity to the user's cognitive state, optimise knowledge transfer and reduce overload without impoverishing the learning experience."> Charge cognitive et apprentissage assisté par IA — comment les interfaces intelligentes peuvent adapter leur complexité à l'état cognitif de l'utilisateur, optimiser la transmission de connaissances et réduire la surcharge sans appauvrir l'expérience d'apprentissage.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- À PROPOS -->
+  <section id="about">
+    <p class="section-eyebrow" data-fr="À propos" data-en="About">À propos</p>
+    <p class="about-text" data-fr="Titulaire d'un <strong>DUT Informatique</strong> (Grenoble) et d'une expérience en développement d'interfaces conversationnelles, j'ai réorienté mon parcours vers la <strong>psychologie cognitive</strong> pour aborder les interactions humain-machine du côté de l'utilisateur. Ce double ancrage — technique et cognitif — structure aujourd'hui mon approche en <strong>ergonomie des systèmes numériques</strong>. Mon stage au <strong>laboratoire LAPCOS</strong> (UCA), consacré à l'évaluation de la charge mentale des chirurgiens face aux outils d'IA, a renforcé mon intérêt pour les environnements à haute exigence cognitive. Je m'intéresse particulièrement aux systèmes d'aide à la décision, aux agents conversationnels et à la conception d'interfaces adaptatives." data-en="With a background in <strong>computer science</strong> (DUT, Grenoble) and experience in conversational interface development, I redirected my career toward <strong>cognitive psychology</strong> to approach human-machine interaction from the user's side. This dual grounding — technical and cognitive — now shapes my approach to <strong>digital systems ergonomics</strong>. My internship at <strong>LAPCOS laboratory</strong> (UCA), focused on evaluating surgeons' mental workload when using AI-assisted tools, deepened my interest in high cognitive-demand environments. I am particularly interested in decision-support systems, conversational agents, and adaptive interface design.">
+      Titulaire d'un <strong>DUT Informatique</strong> (Grenoble) et d'une expérience en développement d'interfaces conversationnelles, j'ai réorienté mon parcours vers la <strong>psychologie cognitive</strong> pour aborder les interactions humain-machine du côté de l'utilisateur. Ce double ancrage — technique et cognitif — structure aujourd'hui mon approche en <strong>ergonomie des systèmes numériques</strong>. Mon stage au <strong>laboratoire LAPCOS</strong> (UCA), consacré à l'évaluation de la charge mentale des chirurgiens face aux outils d'IA, a renforcé mon intérêt pour les environnements à haute exigence cognitive. Je m'intéresse particulièrement aux systèmes d'aide à la décision, aux agents conversationnels et à la conception d'interfaces adaptatives.
+    </p>
+  </section>
+
+  <!-- FORMATION -->
+  <section id="formation">
+    <p class="section-eyebrow" data-fr="Formation" data-en="Education">Formation</p>
+    <div class="timeline">
+
+      <div class="timeline-item current">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date" data-fr="2024 — en cours" data-en="2024 — present">2024 — en cours</div>
+        <div class="timeline-title">
+          <span data-fr="M1 Ergonomie Cognitive et Technologies du Numérique" data-en="M1 Cognitive Ergonomics and Digital Technologies">M1 Ergonomie Cognitive et Technologies du Numérique</span>
+          <span class="badge-current" data-fr="En cours" data-en="Current">En cours</span>
+        </div>
+        <div class="timeline-sub" data-fr="Université Côte d'Azur — Nice" data-en="Université Côte d'Azur — Nice">Université Côte d'Azur — Nice</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2022 — 2024</div>
+        <div class="timeline-title" data-fr="L2 / L3 Psychologie" data-en="L2 / L3 Psychology">L2 / L3 Psychologie</div>
+        <div class="timeline-sub" data-fr="Université Côte d'Azur — Nice" data-en="Université Côte d'Azur — Nice">Université Côte d'Azur — Nice</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2022</div>
+        <div class="timeline-title" data-fr="L1 Sociologie" data-en="L1 Sociology">L1 Sociologie</div>
+        <div class="timeline-sub" data-fr="Université Côte d'Azur — Nice" data-en="Université Côte d'Azur — Nice">Université Côte d'Azur — Nice</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2019 — 2022</div>
+        <div class="timeline-title" data-fr="DUT Informatique" data-en="DUT Computer Science">DUT Informatique</div>
+        <div class="timeline-sub" data-fr="IUT2 Grenoble" data-en="IUT2 Grenoble">IUT2 Grenoble</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROJETS -->
+  <section id="projets">
+    <p class="section-eyebrow" data-fr="Projets & réalisations" data-en="Projects & work">Projets & réalisations</p>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-number">01</div>
+        <h3 data-fr="Feedback & charge cognitive en apprentissage" data-en="Feedback & cognitive load in learning">Feedback & charge cognitive en apprentissage</h3>
+        <p data-fr="Étude expérimentale (N≈80) sur l'effet des indicateurs de progression immédiats sur la motivation intrinsèque et la charge perçue. Design factoriel 2×2, cadre théorique CLT/SDT." data-en="Experimental study (N≈80) on the effect of immediate progress indicators on intrinsic motivation and perceived cognitive load. 2×2 factorial design, CLT/SDT theoretical framework.">Étude expérimentale (N≈80) sur l'effet des indicateurs de progression immédiats sur la motivation intrinsèque et la charge perçue. Design factoriel 2×2, cadre théorique CLT/SDT.</p>
+        <div class="project-pills">
+          <span class="pill pill-green">Design expérimental</span>
+          <span class="pill pill-green">Jamovi</span>
+          <span class="pill pill-green">CLT / SDT</span>
+          <span class="pill pill-gray">APA 7</span>
+        </div>
+        <a href="memoire_TER.pdf" class="project-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span data-fr="Lire le mémoire (PDF)" data-en="Read the thesis (PDF)">Lire le mémoire (PDF)</span>
+        </a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-number">02</div>
+        <h3 data-fr="Charge mentale & IA chirurgicale — LAPCOS" data-en="Mental workload & surgical AI — LAPCOS">Charge mentale & IA chirurgicale — LAPCOS</h3>
+        <p data-fr="Stage d'observation au laboratoire LAPCOS (UCA). Évaluation de la perception et de la charge mentale des chirurgiens face aux outils d'IA assistée (CHU Nice / Abys Medical). Questionnaire UTAUT2, modèle ICA." data-en="Observation internship at LAPCOS laboratory (UCA). Evaluation of surgeons' perception and mental workload when using AI-assisted tools (CHU Nice / Abys Medical). UTAUT2 questionnaire, ICA model.">Stage d'observation au laboratoire LAPCOS (UCA). Évaluation de la perception et de la charge mentale des chirurgiens face aux outils d'IA assistée (CHU Nice / Abys Medical). Questionnaire UTAUT2, modèle ICA.</p>
+        <div class="project-pills">
+          <span class="pill pill-green">Situation awareness</span>
+          <span class="pill pill-green">UTAUT2 / TAM</span>
+          <span class="pill pill-green">LimeSurvey</span>
+          <span class="pill pill-gray">Modèle ICA</span>
+        </div>
+        <a href="rapport_stage_LAPCOS.pdf" class="project-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span data-fr="Lire le rapport (PDF)" data-en="Read the report (PDF)">Lire le rapport (PDF)</span>
+        </a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-number">03</div>
+        <h3 data-fr="Agent conversationnel — Cyber-opéra interactif" data-en="Conversational agent — Interactive cyber-opera">Agent conversationnel — Cyber-opéra interactif</h3>
+        <p data-fr="Développement d'un chatbot pour une œuvre artistique interactive au LIG (Grenoble). Interface conversationnelle embarquée dans une application mobile multimodale, liant narration et interaction utilisateur en temps réel." data-en="Development of a chatbot for an interactive artistic work at LIG (Grenoble). Conversational interface embedded in a multimodal mobile application, linking narrative and real-time user interaction.">Développement d'un chatbot pour une œuvre artistique interactive au LIG (Grenoble). Interface conversationnelle embarquée dans une application mobile multimodale, liant narration et interaction utilisateur en temps réel.</p>
+        <div class="project-pills">
+          <span class="pill pill-brown">Flutter / Dart</span>
+          <span class="pill pill-brown">Provider</span>
+          <span class="pill pill-brown">NLP</span>
+          <span class="pill pill-gray">HCI</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-number">04</div>
+        <h3 data-fr="Automatisation Python pour la recherche" data-en="Python automation for research">Automatisation Python pour la recherche</h3>
+        <p data-fr="Scripts de collecte et de traitement de données pour des contextes de recherche : scraping web (Playwright, Selenium), extraction d'emails, construction de fichiers CSV et publipostage automatisé." data-en="Data collection and processing scripts for research contexts: web scraping (Playwright, Selenium), email extraction, CSV file construction and automated mail merging.">Scripts de collecte et de traitement de données pour des contextes de recherche : scraping web (Playwright, Selenium), extraction d'emails, construction de fichiers CSV et publipostage automatisé.</p>
+        <div class="project-pills">
+          <span class="pill pill-brown">Python</span>
+          <span class="pill pill-brown">Playwright</span>
+          <span class="pill pill-brown">Selenium</span>
+          <span class="pill pill-gray">Pandas</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMPÉTENCES -->
+  <section id="competences">
+    <p class="section-eyebrow" data-fr="Compétences" data-en="Skills">Compétences</p>
+    <div class="skills-layout">
+      <div class="skills-group">
+        <div class="skills-group-title" data-fr="Méthodes de recherche" data-en="Research methods">Méthodes de recherche</div>
+        <div class="skill-row"><span class="skill-dot"></span><span data-fr="Design expérimental (factoriel, between-subjects)" data-en="Experimental design (factorial, between-subjects)">Design expérimental (factoriel, between-subjects)</span></div>
+        <div class="skill-row"><span class="skill-dot"></span><span data-fr="Psychométrie & construction de questionnaires" data-en="Psychometrics & questionnaire design">Psychométrie & construction de questionnaires</span></div>
+        <div class="skill-row"><span class="skill-dot"></span><span data-fr="Observation de terrain" data-en="Field observation">Observation de terrain</span></div>
+        <div class="skill-row"><span class="skill-dot"></span><span data-fr="Évaluation de la charge mentale" data-en="Mental workload assessment">Évaluation de la charge mentale</span></div>
+        <div class="skill-row"><span class="skill-dot"></span><span data-fr="Analyse statistique (Jamovi)" data-en="Statistical analysis (Jamovi)">Analyse statistique (Jamovi)</span></div>
+        <div class="skill-row"><span class="skill-dot"></span><span data-fr="Rédaction scientifique APA 7" data-en="Scientific writing APA 7">Rédaction scientifique APA 7</span></div>
+      </div>
+      <div class="skills-group">
+        <div class="skills-group-title" data-fr="Outils & technologies" data-en="Tools & technologies">Outils & technologies</div>
+        <div class="skill-row"><span class="skill-dot"></span><span>Python (Playwright, Selenium, Pandas)</span></div>
+        <div class="skill-row"><span class="skill-dot"></span><span>Flutter / Dart / Provider</span></div>
+        <div class="skill-row"><span class="skill-dot"></span><span>LimeSurvey</span></div>
+        <div class="skill-row"><span class="skill-dot"></span><span data-fr="LLMs locaux (LM Studio, Ollama)" data-en="Local LLMs (LM Studio, Ollama)">LLMs locaux (LM Studio, Ollama)</span></div>
+        <div class="skill-row"><span class="skill-dot"></span><span>HTML / CSS</span></div>
+        <div class="skill-row"><span class="skill-dot"></span><span data-fr="Français natif — Anglais C1" data-en="Native French — English C1">Français natif — Anglais C1</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-eyebrow" data-fr="Contact" data-en="Contact">Contact</p>
+    <div class="contact-grid">
+      <a href="mailto:moyad.ahamed@etu.univ-cotedazur.fr" class="contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        <span>moyad.ahamed@etu.univ-cotedazur.fr</span>
+      </a>
+      <a href="https://linkedin.com/in/moyad" class="contact-item" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+        <span>LinkedIn</span>
+      </a>
+      <a href="memoire_TER.pdf" class="contact-item" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span data-fr="Mémoire TER (PDF)" data-en="TER Thesis (PDF)">Mémoire TER (PDF)</span>
+      </a>
+      <a href="rapport_stage_LAPCOS.pdf" class="contact-item" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span data-fr="Rapport LAPCOS (PDF)" data-en="LAPCOS Report (PDF)">Rapport LAPCOS (PDF)</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span data-fr="© 2025 Moyad — Ergonomie Cognitive & HCI" data-en="© 2025 Moyad — Cognitive Ergonomics & HCI">© 2025 Moyad — Ergonomie Cognitive & HCI</span>
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      const txt = el.getAttribute('data-' + lang);
+      if (txt) el.innerHTML = txt;
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+    });
+  }
+</script>
+
+</body>
+</html>
